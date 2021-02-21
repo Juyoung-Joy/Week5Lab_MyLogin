@@ -20,15 +20,14 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         
         HttpSession session = request.getSession();        
-        String action = request.getParameter("action");
+        String action = request.getParameter("logout");
         
-        if(action != null  && action.equals("logout")){
+        if(action != null){
            session.invalidate();
-           session = request.getSession();
            request.setAttribute("message", "Successfully logged out");
            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
                    .forward(request, response); 
-//           return;
+           return;
         }
         
         String username = (String) session.getAttribute("username");
@@ -55,7 +54,7 @@ public class LoginServlet extends HttpServlet {
         AccountService account = new AccountService();
         User user = null;
         
-        if(username!= null && password != null && username.length() != 0 && password.length() != 0){
+        if(username!= null && password != null && !username.equals("") && !password.equals("")){
         user = account.login(username, password);
 
         }
