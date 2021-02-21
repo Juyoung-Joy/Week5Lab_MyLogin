@@ -55,21 +55,19 @@ public class LoginServlet extends HttpServlet {
         AccountService account = new AccountService();
         User user = null;
         
-        if (username == null || username.equals("") || password == null || password.equals("")) {
-            user = account.login(username, password);
+        if(username!= null && password != null && username.length() != 0 && password.length() != 0){
+        user = account.login(username, password);
+
         }
-       
-             
+        
         if (user != null) {
             session.setAttribute("username", username);
             response.sendRedirect("home");
+        } else {
+            request.setAttribute("message", "Incorrect user or password. Please try again.");
+            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         }
-        else{
-            request.setAttribute("message", "Invalid account");
-            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
-                    .forward(request, response);
-        }              
-                       
-        }
+    }
+        
 
 }
